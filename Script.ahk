@@ -23,6 +23,7 @@
 - SoundCheck() 							; Проверяет настройку отвечающую за активность звуковых эффектов
 */
 
+; Initialization
 #SingleInstance force
 if 0 <> 0
 {
@@ -62,8 +63,12 @@ fire := 0
 fireDelay := 105
 firePause = fireDelay - 45
 Weapons := ["870MCS", "AS VAL", "DAO-12", "M1014", "MK3A1", "MP7", "P90", "PDW-R", "PP-19", "PP-2000", "SAIGA 12K", "UMP-45", "USAS-12", "AEK-971", "AK-74M", "AN-94", "F2000", "FAMAS", "G3A3", "KH2002", "L85A2", "M16A3", "M16A4", "M416", "A-91", "AKS-74u", "G36C", "G53", "M4", "M4A1", "QBZ-95B", "SCAR-H", "SG553", "M240B", "M249", "M27 IAR", "M60E4", "MG36", "PKP", "QBB-95", "RPK-74M", "Type 88", "SVD", "MK11", "M39 EMR", "SV98", "M98B", "M40A5", "SKS", "QBU-88", "L96", ".44", "93R", "G17C", "G18", "M1911", "M9", "MP412", "MP443"]
+
+; Check of resources
 IsIniExists()
 SoundCheck()
+
+; Initialization of interface
 Gui, Add, Tab, x2 y0 w490 h320 , Основное|Модификации|Настройки|Доп. настройки|Горячие клавиши|О программе
 Gui, Add, Text, x12 y30 w200 h20 vTextStatus, Статус: выкл
 Gui, Add, Text, x12 y50 w200 h20 vTextActiveProfile, Выбран профиль: Assault
@@ -138,12 +143,21 @@ Gui, 2:Add, Edit, x142 y30 w120 h20 vEdit2, Edit
 Gui, 2:Add, Edit, x272 y30 w120 h20 vEdit3, Edit
 Gui, 2:Add, Button, x12 y60 w190 h30 disabled , Ок
 Gui, 2:Add, Button, x202 y60 w190 h30 , Отмена
+
+; Loading of settings
 GUILoadProfiles()
 LoadCorrection(1)
+
+; Update of interface
 GUIUpdateInfo()
+
+; Show of interface
 Gui, Show, h322 w494, %title%
 return
 
+; --- BUTTONS ---
+
+; Left mouse button + any key
 *LButton::
 	if (!fire)
 	{
@@ -168,6 +182,7 @@ return
 	}
 return
 
+; F8 + any key
 *F8::
 	Suspend
 	if (!autoSpotting)
@@ -193,6 +208,7 @@ return
 	}
 return
 
+; F9 + any key
 *F9::
 	if (!fire)
 	{
@@ -214,6 +230,7 @@ return
 	}
 return
 
+; F10 + any key
 *F10::
 	Suspend
 	if (!work)
@@ -242,6 +259,7 @@ return
 	}
 return
 
+; Up arrow + Ctrl
 ^Up::
 	if ((fireDelay <= 270) || (fireDelay > 300))
 	{
@@ -262,6 +280,7 @@ return
 	}
 return
 
+; Down arrow + Ctrl
 ^Down::
 	if ((fireDelay >= 135) || (fireDelay < 105))
 	{
@@ -282,6 +301,7 @@ return
 	}
 return
 
+; 1 + Alt
 !SC002::
 	Song("mode")
 	Send, !{SC002}
@@ -291,6 +311,7 @@ ButtonAssault:
 	GUIUpdateProfile()
 return
 
+; 2 + Alt
 !SC003::
 	Song("mode")
 	Send, !{SC003}
@@ -300,6 +321,7 @@ ButtonEngineer:
 	GUIUpdateProfile()
 return
 
+; 3 + Alt
 !SC004::
 	Song("mode")
 	Send, !{SC004}
@@ -309,13 +331,14 @@ ButtonSupport:
 	GUIUpdateProfile()
 return
 
+; 1
 ~*SC002::
 	Send, {SC002}
 	slot := 1
 	LoadCorrection(1)
 	GUIUpdateInfo()
 return
-
+; 2
 ~*SC003::
 	Send, {SC003}
 	slot := 2
@@ -326,6 +349,8 @@ return
 	recDelay := 20
 	GUIUpdateInfo()
 return
+
+; --- LABELS ---
 
 AutoSpot:
 	Send {Blind}{SC010 down}
@@ -490,6 +515,7 @@ CheckBoxLFire:
 		enableLastCorr := 0
 return
 
+; Close programm
 GuiClose:
 *F11::
 	Suspend
@@ -504,6 +530,8 @@ GuiClose:
 	}
 	ExitApp
 return
+
+; --- FUNCTIONS ---
 
 ChangeCorrection(tmp1, tmp2, tmp3)
 {
