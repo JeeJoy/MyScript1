@@ -9,11 +9,9 @@
 
 ; --- INITIALIZATION ---
 
-#SingleInstance force
-if 0 <> 0
-{
+#SingleInstance force ; When you start a new instance of the script, the old will be turned off.
+if (0 <> 0)
 	ExitApp
-}
 #NoEnv
 SendMode Input
 SetWorkingDir %A_ScriptDir%
@@ -25,6 +23,15 @@ Suspend On ; Disable the script at startup
 
 work := 0 ; Working state
 autoSpotting := 0 ; State of the function "Autospotting"
+
+; Initialization of interface
+Gui, Add, Tab, x2 y0 w490 h320 , Горячие клавиши
+
+Gui, Tab, Горячие клавиши
+Gui, Add, Edit, x12 y30 w440 h280 vHotkeys ReadOnly, F1 - Activating / Deactivating`nF2 - Activating / Deactivating of Autospotting`nF11 - Exit
+
+; Show of interface
+Gui, Show, h322 w494, %title%
 
 return ; Completion of the initialization
 
@@ -90,6 +97,8 @@ return
 return
 
 ; Close programm
+GuiClose: ; Label which is activated after clicking on the close button in GUI
+; Note: After clicking on the close button (in GUI) to show a warning about closing script!!!
 *F11:: ; F11 + any key
 	Suspend ; Hotkey is always in enabled state
 	Suspend On ; Disable the script
