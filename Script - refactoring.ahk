@@ -18,6 +18,12 @@ return ; Completion of the initialization
 
 ; --- BUTTONS ---
 
+*LButton:: ; Left mouse button + any key
+	Click down
+	KeyWait, LButton, U
+	Click up
+return
+
 *F1:: ; F1 + any key
 	Suspend ; Hotkey is always in enabled state
 	if (!work) ; If not work, then enable it
