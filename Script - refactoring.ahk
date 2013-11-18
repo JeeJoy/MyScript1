@@ -1,4 +1,14 @@
-﻿; Initialization
+﻿/*
+	Autor: Gorelov Pavel (JeeJoy)
+	Contact E-mail: jeejoy93@mail.ru
+	
+	The script was developed for educational purposes.
+	Author of the script is not responsible for the moral or material damage by third parties.
+	Use at your own risk!
+*/
+
+; --- INITIALIZATION ---
+
 #SingleInstance force
 if 0 <> 0
 {
@@ -12,6 +22,7 @@ SetBatchLines, -1
 Suspend On ; Disable the script at startup
 
 ; --- VARIABLES ---
+
 work := 0 ; Working state
 autoSpotting := 0 ; State of the function "Autospotting"
 
@@ -25,6 +36,7 @@ return ; Completion of the initialization
 	Click up
 return
 
+; Activating of script
 *F1:: ; F1 + any key
 	Suspend ; Hotkey is always in enabled state
 	if (!work) ; If not work, then enable it
@@ -50,6 +62,7 @@ return
 	}
 return
 
+; Activating of Autospotting
 *F2:: ; F2 + any key
 	Suspend ; Hotkey is always in enabled state
 	if (!autoSpotting) ; If not work, then enable it
