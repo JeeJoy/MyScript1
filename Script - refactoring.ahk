@@ -13,6 +13,7 @@ Suspend On ; Disable the script at startup
 
 ; --- VARIABLES ---
 work := 0 ; Working state
+autoSpotting := 0 ; State of the function "Autospotting"
 
 return ; Completion of the initialization
 
@@ -42,10 +43,36 @@ return
 	{
 		work := 0 ; Deactivating
 		Suspend On ; Disable hotkeys
-		 ; Blinking of ScrollLock (once)
+		; Blinking of ScrollLock (once)
 		SetScrollLockState, On
 		Sleep 180
 		SetScrollLockState, Off
+	}
+return
+
+*F2:: ; F2 + any key
+	Suspend ; Hotkey is always in enabled state
+	if (!autoSpotting) ; If not work, then enable it
+	{
+		autoSpotting := 1 ; Activating
+		SetTimer, AutoSpotting, 2200 ; Call of spotting once in 2.2 seconds
+		Loop, 2 ; Blinking of ScrollLock (twice)
+		{
+			SetScrollLockState, On
+			Sleep 90
+			SetScrollLockState, Off
+			Sleep 90
+		}
+	}
+	else
+	{
+		autoSpotting := 0 ; Deactivating
+		SetTimer, AutoSpotting, Off
+		; Blinking of ScrollLock (once)
+		SetScrollLockState, On
+		Sleep 180
+		SetScrollLockState, Off
+		Sleep 90
 	}
 return
 
@@ -61,4 +88,16 @@ return
 		Sleep 90
 	}
 	ExitApp ; Close programm
+return
+
+; --- LABELS ---
+
+AutoSpotting:
+	Send {Blind}{SC010 down} ; Send "Q" key and hold it on pressed state
+	Sleep, 105
+	Send {Blind}{SC010 up}
+	; Blinking of ScrollLock
+	SetScrollLockState, On
+	Sleep 90
+	SetScrollLockState, Off
 return
