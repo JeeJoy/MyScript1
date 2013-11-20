@@ -21,12 +21,14 @@ Suspend On ; Disable the script at startup
 
 ; --- VARIABLES ---
 
-title := "BF3 Multiscript"
-work := 0 ; Working state
 autoSpotting := 0 ; State of the function "Autospotting"
+bf3SettingsFile = %A_MyDocuments%\Battlefield 3\settings\PROF_SAVE_profile
+sensitivity := 0.5 ; Mouse's sensitivity
+title := "BF3 Multiscript" ; Script's title
+work := 0 ; Working state
 
 ; Initialization of interface
-Gui, Add, ListBox, x12 y20 w100 h80 , General|Options|Settings|About
+Gui, Add, ListBox, x12 y20 w100 h80 , General|Options|Settings|About ; Menu
 
 Gui, Add, GroupBox, x122 y10 w150 h90 , Hotkeys
 Gui, Add, Text, x132 y30 w120 h20 vTextF1 , F1: Correction is disabled
@@ -51,14 +53,17 @@ return
 	Suspend ; Hotkey is always in enabled state
 	if (!work) ; If not work, then enable it
 	{
-		work := 1 ; Activating
-		Suspend Off ; Enable hotkeys
-		Loop, 2 ; Blinking of ScrollLock (twice)
+		if (SensCheck())
 		{
-			SetScrollLockState, On
-			Sleep 90
-			SetScrollLockState, Off
-			Sleep 90
+			work := 1 ; Activating
+			Suspend Off ; Enable hotkeys
+			Loop, 2 ; Blinking of ScrollLock (twice)
+			{
+				SetScrollLockState, On
+				Sleep 90
+				SetScrollLockState, Off
+				Sleep 90
+			}
 		}
 	}
 	else ; Or disable it
@@ -134,7 +139,16 @@ return
 
 ; --- FUNCTIONS ---
 
-; Function GUI update
+; Check of settings BF3
+CheckBF3Settings()
+{
+	global bf3SettingsFile
+	
+	IfNotExist, %bf3SettingsFile%
+		return 1
+}
+
+; Update of GUI
 GUIUpdate()
 {
 	; Global variables
@@ -150,4 +164,17 @@ GUIUpdate()
 		GuiControl, , TextF2, F2: Spotting is enabled
 	else
 		GuiControl, , TextF2, F2: Spotting is disabled
+}
+
+; Check of mouse's sensitivity 
+SensCheck()
+{
+	global bf3SettingsFile
+	
+	err := CheckBF3Settings()
+	
+	if (!err)
+		return 1
+	else
+		MsgBox, File of settings BF3 not found. Check it!`n%bf3SettingsFile%
 }
