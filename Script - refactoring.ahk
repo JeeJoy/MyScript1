@@ -25,13 +25,15 @@ work := 0 ; Working state
 autoSpotting := 0 ; State of the function "Autospotting"
 
 ; Initialization of interface
-Gui, Add, Tab, x2 y0 w490 h320 , Горячие клавиши
+Gui, Add, ListBox, x12 y20 w100 h80 , General|Options|Settings|About
 
-Gui, Tab, Горячие клавиши
-Gui, Add, Edit, x12 y30 w440 h280 vHotkeys ReadOnly, F1 - Activating / Deactivating`nF2 - Activating / Deactivating of Autospotting`nF11 - Exit
+Gui, Add, GroupBox, x122 y10 w130 h90 , Hotkeys
+Gui, Add, Text, x132 y30 w100 h20 , F1: Script is disabled
+Gui, Add, Text, x132 y50 w110 h20 , F2: Spotting is disabled
+Gui, Add, Text, x132 y70 w100 h20 , F11: Exit
 
 ; Show of interface
-Gui, Show, h322 w494, %title%
+Gui, Show, h115 w267, %title%
 
 return ; Completion of the initialization
 
