@@ -170,11 +170,35 @@ GUIUpdate()
 SensCheck()
 {
 	global bf3SettingsFile
+	global sensitivity
 	
 	err := CheckBF3Settings()
 	
-	if (!err)
+	if (!err) {
+		if (!SensSearch())
+			return 0
+		
 		return 1
-	else
+	}
+	else if (err == 1) {
 		MsgBox, File of settings BF3 not found. Check it!`n%bf3SettingsFile%
+	}
+}
+
+SensSearch()
+{
+	global bf3SettingsFile
+	global sensitivity
+	
+	Loop, read, %bf3SettingsFile%
+	{
+		str = %A_LoopReadLine%
+		StringLeft, cutStr, str, 26
+		if (cutStr == "GstInput.MouseSensitivity ") {
+			StringMid, sensitivity, str, 27, StrLen(str)
+			return 1
+		}
+	}
+	
+	MsgBox, Value of mouse's sensitivity not found. Check settings BF3!`nFile: %bf3SettingsFile%`nVariable: GstInput.MouseSensitivity
 }
