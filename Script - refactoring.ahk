@@ -21,19 +21,20 @@ Suspend On ; Disable the script at startup
 
 ; --- VARIABLES ---
 
+title := "BF3 Multiscript"
 work := 0 ; Working state
 autoSpotting := 0 ; State of the function "Autospotting"
 
 ; Initialization of interface
 Gui, Add, ListBox, x12 y20 w100 h80 , General|Options|Settings|About
 
-Gui, Add, GroupBox, x122 y10 w130 h90 , Hotkeys
-Gui, Add, Text, x132 y30 w100 h20 , F1: Script is disabled
-Gui, Add, Text, x132 y50 w110 h20 , F2: Spotting is disabled
+Gui, Add, GroupBox, x122 y10 w150 h90 , Hotkeys
+Gui, Add, Text, x132 y30 w120 h20 vTextF1 , F1: Correction is disabled
+Gui, Add, Text, x132 y50 w110 h20 vTextF2 , F2: Spotting is disabled
 Gui, Add, Text, x132 y70 w100 h20 , F11: Exit
 
 ; Show of interface
-Gui, Show, h115 w267, %title%
+Gui, Show, h115 w287, %title%
 
 return ; Completion of the initialization
 
@@ -69,6 +70,8 @@ return
 		Sleep 180
 		SetScrollLockState, Off
 	}
+	
+	GUIUpdate()
 return
 
 ; Activating of Autospotting
@@ -96,6 +99,8 @@ return
 		SetScrollLockState, Off
 		Sleep 90
 	}
+	
+	GUIUpdate()
 return
 
 ; Close programm
@@ -116,6 +121,7 @@ return
 
 ; --- LABELS ---
 
+; Label of spotting
 AutoSpotting:
 	Send {Blind}{SC010 down} ; Send "Q" key and hold it on pressed state
 	Sleep, 105
@@ -125,3 +131,23 @@ AutoSpotting:
 	Sleep 90
 	SetScrollLockState, Off
 return
+
+; --- FUNCTIONS ---
+
+; Function GUI update
+GUIUpdate()
+{
+	; Global variables
+	global work
+	global autoSpotting
+	
+	if (work)
+		GuiControl, , TextF1, F1: Correction is enabled
+	else
+		GuiControl, , TextF1, F1: Correction is disabled
+	
+	if (autoSpotting)
+		GuiControl, , TextF2, F2: Spotting is enabled
+	else
+		GuiControl, , TextF2, F2: Spotting is disabled
+}
